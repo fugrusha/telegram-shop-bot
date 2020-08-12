@@ -1,8 +1,8 @@
-package org.golovko.telegramshop.botapi.handler;
+package org.golovko.telegramshop.botapi.handler.menu;
 
 import org.golovko.telegramshop.botapi.BotState;
+import org.golovko.telegramshop.botapi.handler.InputMessageHandler;
 import org.golovko.telegramshop.cache.UserDataCache;
-import org.golovko.telegramshop.service.KeyboardService;
 import org.golovko.telegramshop.service.ReplyMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -10,13 +10,10 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 @Component
-public class StartMessageHandler implements InputMessageHandler {
+public class MyOrdersMenuButtonHandler implements InputMessageHandler {
 
     @Autowired
     private ReplyMessageService messageService;
-
-    @Autowired
-    private KeyboardService keyboardService;
 
     @Autowired
     private UserDataCache userDataCache;
@@ -28,15 +25,14 @@ public class StartMessageHandler implements InputMessageHandler {
 
     @Override
     public BotState getHandlerName() {
-        return BotState.START;
+        return BotState.SHOW_MY_ORDERS;
     }
 
     private SendMessage processUsersInput(Message inputMsg) {
         long chatId = inputMsg.getChatId();
-        String name = inputMsg.getFrom().getFirstName();
 
-        SendMessage replyToUser = messageService.getReplyMessage(chatId, "reply.startMessage", name);
-        replyToUser.setReplyMarkup(keyboardService.getMainMenuKeyboard());
+        SendMessage replyToUser = messageService.getReplyMessage(chatId, "reply.showMyOrders");
+        replyToUser.setParseMode("HTML");
 
         userDataCache.setNewBotState(chatId, BotState.SHOW_MAIN_MENU);
 
