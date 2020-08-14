@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.golovko.telegramshop.botapi.handler.callback.CallbackQueryFacade;
 import org.golovko.telegramshop.cache.UserDataCache;
 import org.golovko.telegramshop.service.AdminService;
+import org.golovko.telegramshop.service.ReplyMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -26,6 +27,9 @@ public class TelegramFacade {
 
     @Autowired
     private AdminService adminService;
+
+    @Autowired
+    private ReplyMessageService messageService;
 
     public BotApiMethod<?> handleUpdate(Update update) {
 

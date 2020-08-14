@@ -33,9 +33,11 @@ public class CallbackQueryFacade {
                 .filter(callbackQuery -> callbackQuery.getHandlerQueryType().equals(usersQueryType))
                 .findFirst();
 
-        BotApiMethod<?> replyToUser = queryHandler.map(handler -> handler.handleCallbackQuery(usersQuery))
-                .orElse(messageService.getWarningReplyMessage(usersQuery.getMessage().getChatId(),
-                        "reply.query.failed"));
+        BotApiMethod<?> replyToUser = queryHandler.get().handleCallbackQuery(usersQuery);
+
+//        BotApiMethod<?> replyToUser = queryHandler.map(handler -> handler.handleCallbackQuery(usersQuery))
+//                .orElse(messageService.getWarningReplyMessage(usersQuery.getMessage().getChatId(),
+//                        "reply.query.failed"));
 
         return replyToUser;
     }

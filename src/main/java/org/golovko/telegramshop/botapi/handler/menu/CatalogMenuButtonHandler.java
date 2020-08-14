@@ -62,7 +62,7 @@ public class CatalogMenuButtonHandler implements InputMessageHandler {
 
             buttons.add(new ArrayList<>() {{
                 add(new InlineKeyboardButton(categoryName)
-                        .setCallbackData(CallbackType.CATEGORY + "=" + categoryName));
+                        .setCallbackData(CallbackType.CATEGORY + "=" + categoryName + "=1"));
             }});
         }
 
