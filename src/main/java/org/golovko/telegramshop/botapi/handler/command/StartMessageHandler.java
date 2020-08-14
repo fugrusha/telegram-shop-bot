@@ -1,7 +1,9 @@
-package org.golovko.telegramshop.botapi.handler;
+package org.golovko.telegramshop.botapi.handler.command;
 
 import org.golovko.telegramshop.botapi.BotState;
+import org.golovko.telegramshop.botapi.handler.InputMessageHandler;
 import org.golovko.telegramshop.cache.UserDataCache;
+import org.golovko.telegramshop.service.CustomerService;
 import org.golovko.telegramshop.service.KeyboardService;
 import org.golovko.telegramshop.service.ReplyMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,9 @@ public class StartMessageHandler implements InputMessageHandler {
     @Autowired
     private UserDataCache userDataCache;
 
+    @Autowired
+    private CustomerService customerService;
+
     @Override
     public SendMessage handle(Message message) {
         return processUsersInput(message);
@@ -32,6 +37,9 @@ public class StartMessageHandler implements InputMessageHandler {
     }
 
     private SendMessage processUsersInput(Message inputMsg) {
+
+        customerService.checkUserIfExists(inputMsg);
+
         long chatId = inputMsg.getChatId();
         String name = inputMsg.getFrom().getFirstName();
 

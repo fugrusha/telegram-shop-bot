@@ -1,8 +1,8 @@
 package org.golovko.telegramshop.botapi.handler.menu;
 
 import org.golovko.telegramshop.botapi.BotState;
+import org.golovko.telegramshop.botapi.handler.CallbackType;
 import org.golovko.telegramshop.botapi.handler.InputMessageHandler;
-import org.golovko.telegramshop.botapi.handler.callback.CallbackType;
 import org.golovko.telegramshop.cache.UserDataCache;
 import org.golovko.telegramshop.domain.Category;
 import org.golovko.telegramshop.service.CategoryService;
@@ -62,7 +62,7 @@ public class CatalogMenuButtonHandler implements InputMessageHandler {
 
             buttons.add(new ArrayList<>() {{
                 add(new InlineKeyboardButton(categoryName)
-                        .setCallbackData(CallbackType.CATEGORY + categoryName));
+                        .setCallbackData(CallbackType.CATEGORY + "=" + categoryName));
             }});
         }
 

@@ -1,10 +1,13 @@
 package org.golovko.telegramshop.botapi;
 
 import lombok.extern.slf4j.Slf4j;
+import org.golovko.telegramshop.botapi.handler.callback.CallbackQueryFacade;
 import org.golovko.telegramshop.cache.UserDataCache;
+import org.golovko.telegramshop.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
@@ -18,28 +21,45 @@ public class TelegramFacade {
     @Autowired
     private BotStateContext botStateContext;
 
+    @Autowired
+    private CallbackQueryFacade callbackQueryFacade;
+
+    @Autowired
+    private AdminService adminService;
+
     public BotApiMethod<?> handleUpdate(Update update) {
 
-//        if (update.getMessage() != null && update.getMessage().hasContact()) {
-//            return phoneNumberHandler.handle(update.getMessage());
-//        }
+        if (update.hasCallbackQuery() || update.hasInlineQuery()) {
+            CallbackQuery callbackQuery = update.getCallbackQuery();
+            log.info("New callbackQuery from User: {}, userId: {}, with data: {}",
+                    update.getCallbackQuery().getFrom().getUserName(),
+                    callbackQuery.getFrom().getId(), update.getCallbackQuery().getData());
 
-//        if (update.hasCallbackQuery()) {
-//            CallbackQuery callbackQuery = update.getCallbackQuery();
-//            log.info("New callbackQuery from User: {}, userId: {}, with data: {}", update.getCallbackQuery().getFrom().getUserName(),
-//                    callbackQuery.getFrom().getId(), update.getCallbackQuery().getData());
-//
-//            return callbackQueryFacade.processCallbackQuery(callbackQuery);
-//        }
+            return callbackQueryFacade.processCallbackQuery(callbackQuery);
+        }
 
         BotApiMethod<?> replyMessage = null;
-        Message message = update.getMessage();
 
-        if (message != null && message.hasText()) {
-            log.info("New message from user:{}, chatId:{}, with text:{}",
-                    message.getFrom().getUserName(), message.getChatId(), message.getText());
+        if (update.hasMessage()) {
+            Message message = update.getMessage();
 
-            replyMessage = handleInputMessage(message);
+//            if (message.hasContact()) {
+//                return phoneNumberHandler.handle(update.getMessage());
+//            }
+
+            if (message.hasPhoto()) {
+                log.info("New photo from user:{}, chatId:{}",
+                        message.getFrom().getUserName(), message.getChatId());
+
+                adminService.getAndSendPhotoId(update.getMessage());
+            }
+
+            if (message.hasText()) {
+                log.info("New message from user:{}, chatId:{}, with text:{}",
+                        message.getFrom().getUserName(), message.getChatId(), message.getText());
+
+                replyMessage = handleInputMessage(message);
+            }
         }
 
 //        replyMessage = new SendMessage(message.getChatId(), message.getText());
