@@ -53,7 +53,7 @@ public class KeyboardService {
 
         List<InlineKeyboardButton> firstRow = new ArrayList<>();
         firstRow.add(new InlineKeyboardButton(messageService.getReplyText("button.addToShoppingCart"))
-                .setCallbackData(product.getId().toString()));
+                .setCallbackData(CallbackType.ADD_TO_CART + "=" + product.getId().toString()));
 
         List<InlineKeyboardButton> secondRow = new ArrayList<>();
 
@@ -69,7 +69,7 @@ public class KeyboardService {
         }
 
         secondRow.add(new InlineKeyboardButton((product.getOrderNumber()) + "/" + totalProducts)
-                .setCallbackData(CallbackType.IGNORE.toString()));
+                .setCallbackData(CallbackType.IGNORE.name()));
 
         int nextNumber = product.getOrderNumber() + 1;
 
@@ -82,6 +82,26 @@ public class KeyboardService {
                     .setCallbackData(CallbackType.CATEGORY + "="
                             + product.getCategory().getName() + "=" + nextNumber));
         }
+
+        keyboard.add(firstRow);
+        keyboard.add(secondRow);
+
+        return new InlineKeyboardMarkup().setKeyboard(keyboard);
+    }
+
+    public InlineKeyboardMarkup createShoppingCartKeyboard() {
+        List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
+
+        List<InlineKeyboardButton> firstRow = new ArrayList<>();
+        firstRow.add(new InlineKeyboardButton(messageService.getReplyText("button.editCart"))
+                .setCallbackData(CallbackType.EDIT_CART.name()));
+
+        firstRow.add(new InlineKeyboardButton(messageService.getReplyText("button.cleanCart"))
+                .setCallbackData(CallbackType.CLEAN_CART.name()));
+
+        List<InlineKeyboardButton> secondRow = new ArrayList<>();
+        secondRow.add(new InlineKeyboardButton(messageService.getReplyText("button.processOrder"))
+                .setCallbackData(CallbackType.PROCESS_ORDER.name()));
 
         keyboard.add(firstRow);
         keyboard.add(secondRow);
