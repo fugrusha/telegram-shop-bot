@@ -73,7 +73,7 @@ public class ShowCategoryCallbackHandler implements CallbackHandler {
                 .setCaption(getDescription(product))
                 .setPhoto(product.getPhotoUrl())
                 .setParseMode("HTML")
-                .setReplyMarkup(keyboardService.createProductKeyboard(product, totalSize));
+                .setReplyMarkup(keyboardService.getProductKeyboard(product, totalSize));
     }
 
     private String getDescription(Product product) {

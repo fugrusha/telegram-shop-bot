@@ -7,4 +7,9 @@ public enum CallbackType {
     CLEAN_CART,
     PROCESS_ORDER,
     CATEGORY,
+    FILLING_ORDER_INFO,
+    PREPAYMENT,
+    NP_PAYMENT,
+    CONFIRM_ORDER,
+    CANCEL_ORDER
 }

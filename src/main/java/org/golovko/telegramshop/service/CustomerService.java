@@ -27,4 +27,12 @@ public class CustomerService {
         customer.setChatId(user.getId().longValue());
         customerRepository.save(customer);
     }
+
+    public Customer getByChatId(long chatId) {
+        return customerRepository.findByChatId(chatId);
+    }
+
+    public void saveCustomer(Customer customer) {
+        customerRepository.save(customer);
+    }
 }

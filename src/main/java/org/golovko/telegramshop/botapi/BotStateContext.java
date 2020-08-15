@@ -26,23 +26,23 @@ public class BotStateContext {
     }
 
     private InputMessageHandler findMessageHandler(BotState currentBotState) {
-//        if (isFillingProfileState(currentBotState)) {
-//            return messageHandlers.get(BotState.FILLING_PROFILE);
-//        }
+        if (isFillingOrderInfoState(currentBotState)) {
+            return messageHandlers.get(BotState.FILLING_ORDER_INFO);
+        }
 
         return messageHandlers.get(currentBotState);
     }
 
-//    private boolean isFillingProfileState(BotState botState) {
-//        switch (botState) {
-//            case ASK_EMAIL:
-//            case ASK_PHONE:
-//            case ASK_DATE:
-//            case ASK_TIME:
-//            case FINISH_APPLICATION:
-//                return true;
-//            default:
-//                return false;
-//        }
-//    }
+    private boolean isFillingOrderInfoState(BotState botState) {
+        switch (botState) {
+            case ENTER_FULL_NAME:
+            case ENTER_PHONE:
+            case ENTER_CITY:
+            case ENTER_ADDRESS:
+            case CONFIRM_ORDER:
+                return true;
+            default:
+                return false;
+        }
+    }
 }

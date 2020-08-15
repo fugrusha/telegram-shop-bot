@@ -9,5 +9,7 @@ import java.util.UUID;
 @Repository
 public interface CustomerRepository extends CrudRepository<Customer, UUID> {
 
-    boolean existsByChatId(Long chatId);
+    boolean existsByChatId(long chatId);
+
+    Customer findByChatId(long chatId);
 }

@@ -29,6 +29,9 @@ public class OrderCart {
     private Double totalSum;
 
     @Enumerated(EnumType.STRING)
+    private PaymentType paymentType;
+
+    @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)

@@ -3,10 +3,7 @@ package org.golovko.telegramshop.domain;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -33,6 +30,9 @@ public class Customer {
     private String city;
 
     private String address;
+
+    @Enumerated(EnumType.STRING)
+    private PaymentType paymentType;
 
     @OneToMany(mappedBy = "customer")
     private List<OrderCart> orderCarts = new ArrayList<>();

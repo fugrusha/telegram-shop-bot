@@ -1,6 +1,7 @@
 package org.golovko.telegramshop.botapi;
 
 import lombok.extern.slf4j.Slf4j;
+import org.golovko.telegramshop.botapi.handler.PhoneNumberHandler;
 import org.golovko.telegramshop.botapi.handler.callback.CallbackQueryFacade;
 import org.golovko.telegramshop.cache.UserDataCache;
 import org.golovko.telegramshop.service.AdminService;
@@ -31,6 +32,9 @@ public class TelegramFacade {
     @Autowired
     private ReplyMessageService messageService;
 
+    @Autowired
+    private PhoneNumberHandler phoneNumberHandler;
+
     public BotApiMethod<?> handleUpdate(Update update) {
 
         if (update.hasCallbackQuery() || update.hasInlineQuery()) {
@@ -47,9 +51,9 @@ public class TelegramFacade {
         if (update.hasMessage()) {
             Message message = update.getMessage();
 
-//            if (message.hasContact()) {
-//                return phoneNumberHandler.handle(update.getMessage());
-//            }
+            if (message.hasContact()) {
+                return phoneNumberHandler.handle(update.getMessage());
+            }
 
             if (message.hasPhoto()) {
                 log.info("New photo from user:{}, chatId:{}",
