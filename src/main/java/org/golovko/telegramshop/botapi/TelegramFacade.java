@@ -86,19 +86,19 @@ public class TelegramFacade {
             case "/start":
                 botState = BotState.START;
                 break;
-            case "Контакты":
+            case "\u260E Контакты":
                 botState = BotState.SHOW_CONTACTS;
                 break;
-            case "Частые вопросы":
+            case "\u2753 Частые вопросы":
                 botState = BotState.QUESTIONS;
                 break;
-            case "Мои заказы":
+            case "\uD83D\uDCE6 Мои заказы":
                 botState = BotState.SHOW_MY_ORDERS;
                 break;
-            case "Каталог товара":
+            case "\uD83D\uDDC2 Каталог товара":
                 botState = BotState.SHOW_CATALOG;
                 break;
-            case "Моя корзина":
+            case "\uD83D\uDED2 Моя корзина":
                 botState = BotState.SHOW_SHOPPING_CART;
                 break;
             case "Отмена":
