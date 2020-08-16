@@ -101,6 +101,9 @@ public class TelegramFacade {
             case "Моя корзина":
                 botState = BotState.SHOW_SHOPPING_CART;
                 break;
+            case "Отмена":
+                botState = BotState.CANCEL_BUTTON;
+                break;
             default:
                 botState = userDataCache.getCurrentBotState(chatId);
                 break;

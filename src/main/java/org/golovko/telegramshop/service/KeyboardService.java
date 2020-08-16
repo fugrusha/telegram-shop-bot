@@ -139,6 +139,8 @@ public class KeyboardService {
         row1.add(new KeyboardButton(messageService.getReplyText("button.sendMyPhone"))
                 .setRequestContact(true));
 
+        row1.add(new KeyboardButton(messageService.getReplyText("button.cancel")));
+
         keyboard.add(row1);
 
         replyKeyboardMarkup.setKeyboard(keyboard);

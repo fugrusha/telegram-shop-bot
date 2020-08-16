@@ -14,5 +14,6 @@ public enum BotState {
     ENTER_CITY,
     ENTER_ADDRESS,
     CHOOSE_PAYMENT_TYPE,
-    CONFIRM_ORDER
+    CONFIRM_ORDER,
+    CANCEL_BUTTON
 }
