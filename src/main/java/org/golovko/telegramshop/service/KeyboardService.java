@@ -1,6 +1,7 @@
 package org.golovko.telegramshop.service;
 
 import org.golovko.telegramshop.botapi.handler.CallbackType;
+import org.golovko.telegramshop.domain.OrderCart;
 import org.golovko.telegramshop.domain.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class KeyboardService {
@@ -159,6 +161,33 @@ public class KeyboardService {
                 .setCallbackData(CallbackType.CANCEL_ORDER.name()));
 
         keyboard.add(firstRow);
+
+        return new InlineKeyboardMarkup().setKeyboard(keyboard);
+    }
+
+    public ReplyKeyboard getOrderListKeyboard(List<OrderCart> orders) {
+        List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
+
+        for (OrderCart order : orders) {
+            UUID orderId = order.getId();
+            String orderNumber = order.getOrderNumber();
+
+            keyboard.add(new ArrayList<>() {{
+                add(new InlineKeyboardButton(orderNumber)
+                        .setCallbackData(CallbackType.MY_ORDERS + "=" + orderId));
+            }});
+        }
+
+        return new InlineKeyboardMarkup().setKeyboard(keyboard);
+    }
+
+    public ReplyKeyboard getRepeatOrderKeybord(UUID orderId) {
+        List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
+
+        keyboard.add(new ArrayList<>() {{
+            add(new InlineKeyboardButton(messageService.getReplyText("button.repeatOrder"))
+                    .setCallbackData(CallbackType.REPEAT_ORDER + "=" + orderId));
+        }});
 
         return new InlineKeyboardMarkup().setKeyboard(keyboard);
     }

@@ -27,6 +27,11 @@ public class OrderService {
     private OrderItemRepository orderItemRepository;
 
     @Transactional
+    public List<OrderCart> getAllOrders(long chatId) {
+        return orderRepository.findOrderByChatIdOrderByCreatedDateDesc(chatId);
+    }
+
+    @Transactional
     public OrderCart createOrder(Customer customer, List<CartItem> cartItems) {
         OrderCart order = new OrderCart();
         order.setCreatedDate(LocalDateTime.now());
@@ -72,5 +77,9 @@ public class OrderService {
 
         orderItemRepository.saveAll(orderItems);
         return orderItems;
+    }
+
+    public OrderCart getOrderById(UUID orderId) {
+        return orderRepository.findById(orderId).get();
     }
 }

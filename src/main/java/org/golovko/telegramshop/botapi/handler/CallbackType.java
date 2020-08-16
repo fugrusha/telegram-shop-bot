@@ -12,5 +12,7 @@ public enum CallbackType {
     NP_PAYMENT,
     CONFIRM_ORDER,
     CANCEL_ORDER,
-    CREATING_ORDER
+    CREATING_ORDER,
+    MY_ORDERS,
+    REPEAT_ORDER
 }
