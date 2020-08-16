@@ -52,22 +52,28 @@ public class FillingOrderInfoMessageHandler implements InputMessageHandler {
         SendMessage replyToUser = messageService.getReplyMessage(chatId, "reply.default");
 
         if (botState.equals(BotState.ENTER_FULL_NAME)) {
-            String[] fullName = usersAnswer.split(" ");
+            if (validationService.isValidText(usersAnswer)) {
+                customer.setName(validationService.getFirstName(usersAnswer));
+                customer.setSurname(validationService.getLastName(usersAnswer));
 
-            customer.setName(fullName[0]);
-            customer.setSurname(fullName[1]);
-
-            replyToUser = messageService.getReplyMessage(chatId, "reply.enterCity");
-
-            userDataCache.setNewBotState(chatId, BotState.ENTER_CITY);
+                replyToUser = messageService.getReplyMessage(chatId, "reply.enterCity");
+                userDataCache.setNewBotState(chatId, BotState.ENTER_CITY);
+            } else {
+                replyToUser = messageService.getReplyMessage(chatId, "reply.repeatFullName");
+                userDataCache.setNewBotState(chatId, BotState.ENTER_FULL_NAME);
+            }
         }
 
         if (botState.equals(BotState.ENTER_CITY)) {
-            customer.setCity(usersAnswer);
+            if (validationService.isValidText(usersAnswer)) {
+                customer.setCity(usersAnswer);
 
-            replyToUser = messageService.getReplyMessage(chatId, "reply.enterAddress");
-
-            userDataCache.setNewBotState(chatId, BotState.ENTER_ADDRESS);
+                replyToUser = messageService.getReplyMessage(chatId, "reply.enterAddress");
+                userDataCache.setNewBotState(chatId, BotState.ENTER_ADDRESS);
+            } else {
+                replyToUser = messageService.getReplyMessage(chatId, "reply.repeatCity");
+                userDataCache.setNewBotState(chatId, BotState.ENTER_CITY);
+            }
         }
 
         if (botState.equals(BotState.ENTER_ADDRESS)) {

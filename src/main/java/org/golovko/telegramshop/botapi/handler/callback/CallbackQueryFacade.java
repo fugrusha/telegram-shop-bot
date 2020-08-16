@@ -55,6 +55,10 @@ public class CallbackQueryFacade {
             return callbackHandlersMap.get(CallbackType.FILLING_ORDER_INFO);
         }
 
+        if (isConfirmOrderType(callbackType)) {
+            return callbackHandlersMap.get(CallbackType.CREATING_ORDER);
+        }
+
         return callbackHandlersMap.get(callbackType);
     }
 
@@ -62,6 +66,16 @@ public class CallbackQueryFacade {
         switch (callbackType) {
             case PREPAYMENT:
             case NP_PAYMENT:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    private boolean isConfirmOrderType(CallbackType callbackType) {
+        switch (callbackType) {
+            case CANCEL_ORDER:
+            case CONFIRM_ORDER:
                 return true;
             default:
                 return false;

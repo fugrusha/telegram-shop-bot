@@ -11,5 +11,6 @@ public enum CallbackType {
     PREPAYMENT,
     NP_PAYMENT,
     CONFIRM_ORDER,
-    CANCEL_ORDER
+    CANCEL_ORDER,
+    CREATING_ORDER
 }

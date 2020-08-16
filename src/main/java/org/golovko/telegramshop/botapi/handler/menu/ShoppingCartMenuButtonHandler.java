@@ -62,8 +62,8 @@ public class ShoppingCartMenuButtonHandler implements InputMessageHandler {
 
     private String createCartText(List<CartItem> allCartItems) {
         double totalSum = 0.0;
-
         StringBuilder sb = new StringBuilder();
+
         for (CartItem item : allCartItems) {
             String productName = item.getProduct().getName();
             Double productPrice = item.getProduct().getPrice();
