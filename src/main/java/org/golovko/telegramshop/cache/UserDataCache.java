@@ -8,7 +8,8 @@ import java.util.Map;
 
 @Component
 public class UserDataCache implements DataCache {
-    private Map<Long, BotState> usersBotStates = new HashMap<>();
+
+    private final Map<Long, BotState> usersBotStates = new HashMap<>();
 
     @Override
     public BotState getCurrentBotState(long chatId) {

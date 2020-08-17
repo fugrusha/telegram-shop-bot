@@ -14,34 +14,14 @@ import java.util.Map;
 @Component
 public class CallbackQueryFacade {
 
-    private final List<CallbackHandler> callbackQueryHandlers;
     private final Map<CallbackType, CallbackHandler> callbackHandlersMap = new HashMap<>();
 
     @Autowired
     public CallbackQueryFacade(List<CallbackHandler> callbackQueryHandlers) {
-        this.callbackQueryHandlers = callbackQueryHandlers;
-        this.callbackQueryHandlers
-                .forEach(handler -> this.callbackHandlersMap.put(handler.getHandlerQueryType(), handler));
+        callbackQueryHandlers.forEach(handler ->
+                        this.callbackHandlersMap.put(handler.getHandlerQueryType(), handler));
 
     }
-
-//    public BotApiMethod<?> processCallbackQuery(CallbackQuery usersQuery) {
-//
-//        CallbackType usersQueryType = CallbackType.valueOf(usersQuery.getData().split("=")[0]);
-//
-//        Optional<CallbackHandler> queryHandler = callbackQueryHandlers
-//                .stream()
-//                .filter(callbackQuery -> callbackQuery.getHandlerQueryType().equals(usersQueryType))
-//                .findFirst();
-//
-//        BotApiMethod<?> replyToUser = queryHandler.get().handleCallbackQuery(usersQuery);
-//
-////        BotApiMethod<?> replyToUser = queryHandler.map(handler -> handler.handleCallbackQuery(usersQuery))
-////                .orElse(messageService.getWarningReplyMessage(usersQuery.getMessage().getChatId(),
-////                        "reply.query.failed"));
-//
-//        return replyToUser;
-//    }
 
     public BotApiMethod<?> processCallbackQuery(CallbackQuery usersQuery) {
         CallbackType usersQueryType = CallbackType.valueOf(usersQuery.getData().split("=")[0]);
