@@ -19,6 +19,6 @@ public enum CallbackType {
     MINUS_PRODUCT,
     PLUS_PRODUCT,
     PREVIOUS_PRODUCT,
-    NEXT_PRODUCT
-
+    NEXT_PRODUCT,
+    OPEN_SHOPPING_CART
 }

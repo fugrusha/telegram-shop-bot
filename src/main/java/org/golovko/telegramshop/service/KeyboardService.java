@@ -203,11 +203,8 @@ public class KeyboardService {
         List<InlineKeyboardButton> firstRow = new ArrayList<>();
         firstRow.add(new InlineKeyboardButton("\u2716")
                 .setCallbackData(EDIT_CART + "=" + DELETE_PRODUCT));
-
         firstRow.add(new InlineKeyboardButton("\u2796")
                 .setCallbackData(EDIT_CART + "=" + MINUS_PRODUCT));
-        firstRow.add(new InlineKeyboardButton(cartItems.get(currentPage).getQuantity() + " pcs.")
-                .setCallbackData(IGNORE.name()));
         firstRow.add(new InlineKeyboardButton("\u2795")
                 .setCallbackData(EDIT_CART + "=" + PLUS_PRODUCT));
 
@@ -221,9 +218,9 @@ public class KeyboardService {
 
         List<InlineKeyboardButton> thirdRow = new ArrayList<>();
         thirdRow.add(new InlineKeyboardButton()
-                .setText(String.format("\u2705 Order for %.2f $ Checkout?",
-                orderService.calculateTotalPrice(cartItems)))
-                .setCallbackData("cart=process-order"));
+                .setCallbackData(OPEN_SHOPPING_CART.name())
+                .setText(messageService.getReplyText("button.checkout",
+                        orderService.calculateTotalPrice(cartItems))));
 
         keyboard.add(firstRow);
         keyboard.add(secondRow);

@@ -24,8 +24,7 @@ public class ReplyMessageService {
         return new SendMessage()
                 .setParseMode("HTML")
                 .setChatId(chatId)
-                .setText(localeMessageService.getMessage(replyMessage))
-                .enableMarkdown(true);
+                .setText(localeMessageService.getMessage(replyMessage));
     }
 
     public SendMessage getReplyMessage(long chatId, String replyMessage, Object... args) {
@@ -60,8 +59,7 @@ public class ReplyMessageService {
         SendMessage sendMessage = new SendMessage()
                 .setParseMode("HTML")
                 .setChatId(chatId)
-                .setText(message)
-                .enableMarkdown(true);
+                .setText(message);
 
         myTelegramBot.send(sendMessage);
     }
