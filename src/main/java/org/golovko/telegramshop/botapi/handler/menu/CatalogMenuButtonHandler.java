@@ -43,7 +43,6 @@ public class CatalogMenuButtonHandler implements InputMessageHandler {
         long chatId = inputMsg.getChatId();
 
         SendMessage replyToUser = messageService.getReplyMessage(chatId, "reply.showCatalog");
-        replyToUser.setParseMode("HTML");
         replyToUser.setReplyMarkup(createCategoriesKeyboard());
 
         userDataCache.setNewBotState(chatId, BotState.SHOW_MAIN_MENU);

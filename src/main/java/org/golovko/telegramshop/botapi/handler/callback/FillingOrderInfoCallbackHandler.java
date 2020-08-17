@@ -69,7 +69,6 @@ public class FillingOrderInfoCallbackHandler implements CallbackHandler {
 
         SendMessage replyToUser = messageService.getReplyMessage(chatId,
                 "reply.confirmOrder", getCustomerData(customer), getOrderData(allCartItems));
-        replyToUser.setParseMode("HTML");
         replyToUser.setReplyMarkup(keyboardService.getConfirmOrderKeyboard());
 
         return replyToUser;

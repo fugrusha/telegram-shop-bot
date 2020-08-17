@@ -66,7 +66,6 @@ public class ConfirmOrderCallbackHandler implements CallbackHandler {
                     "reply.orderWasCreated", orderNumber);
         }
 
-        replyToUser.setParseMode("HTML");
         replyToUser.setReplyMarkup(keyboardService.getMainMenuKeyboard());
         userDataCache.setNewBotState(chatId, BotState.SHOW_MAIN_MENU);
         return replyToUser;

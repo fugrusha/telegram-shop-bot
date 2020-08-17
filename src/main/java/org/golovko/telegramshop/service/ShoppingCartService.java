@@ -16,27 +16,27 @@ public class ShoppingCartService {
     @Autowired
     private ShoppingCartCache cartCache;
 
-    public List<CartItem> findAllCartItemsByChatId(long chatId) {
+    public List<CartItem> findAllCartItemsByChatId(Long chatId) {
         return cartCache.findAllCartItemsByChatId(chatId);
     }
 
-    public CartItem findCartItemByChatIdAndProductId(long chatId, UUID productId) {
+    public CartItem findCartItemByChatIdAndProductId(Long chatId, UUID productId) {
         return cartCache.findCartItemByChatIdAndProductId(chatId, productId);
     }
 
-    public void updateCartItem(long chatId, CartItem cartItem) {
+    public void updateCartItem(Long chatId, CartItem cartItem) {
         cartCache.updateCartItem(chatId, cartItem);
     }
 
-    public void saveCartItem(long chatId, CartItem cartItem) {
+    public void saveCartItem(Long chatId, CartItem cartItem) {
         cartCache.saveCartItem(chatId, cartItem);
     }
 
-    public void deleteAllCartItemsByChatId(long chatId) {
+    public void deleteAllCartItemsByChatId(Long chatId) {
         cartCache.deleteAllCartItemsByChatId(chatId);
     }
 
-    public void copyOrderToShoppingCart(OrderCart order, long chatId) {
+    public void copyOrderToShoppingCart(OrderCart order, Long chatId) {
         deleteAllCartItemsByChatId(chatId);
 
         for (OrderItem item : order.getItems()) {
@@ -46,5 +46,17 @@ public class ShoppingCartService {
 
             saveCartItem(chatId, cartItem);
         }
+    }
+
+    public void setPageNumber(Long chatId, Integer pageNumber) {
+        cartCache.setPageNumber(chatId, pageNumber);
+    }
+
+    public Integer findPageNumberByChatId(Long chatId) {
+        return cartCache.findPageNumberByChatId(chatId);
+    }
+
+    public void deleteCartItem(Long chatId, Integer cartItemId) {
+        cartCache.deleteCartItem(chatId, cartItemId);
     }
 }

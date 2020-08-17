@@ -1,8 +1,8 @@
 package org.golovko.telegramshop.service;
 
-import org.golovko.telegramshop.botapi.handler.CallbackType;
 import org.golovko.telegramshop.domain.OrderCart;
 import org.golovko.telegramshop.domain.Product;
+import org.golovko.telegramshop.domain.model.CartItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -16,11 +16,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static org.golovko.telegramshop.botapi.handler.CallbackType.*;
+
 @Service
 public class KeyboardService {
 
     @Autowired
     private ReplyMessageService messageService;
+
+    @Autowired
+    private OrderService orderService;
 
     public ReplyKeyboardMarkup getMainMenuKeyboard() {
 
@@ -56,33 +61,33 @@ public class KeyboardService {
 
         List<InlineKeyboardButton> firstRow = new ArrayList<>();
         firstRow.add(new InlineKeyboardButton(messageService.getReplyText("button.addToShoppingCart"))
-                .setCallbackData(CallbackType.ADD_TO_CART + "=" + product.getId().toString()));
+                .setCallbackData(ADD_TO_CART + "=" + product.getId().toString()));
 
         List<InlineKeyboardButton> secondRow = new ArrayList<>();
 
         if (product.getOrderNumber() == 1) {
             secondRow.add(new InlineKeyboardButton("\u25c0")
-                    .setCallbackData(CallbackType.CATEGORY + "="
+                    .setCallbackData(CATEGORY + "="
                             + product.getCategory().getName() + "=" + totalProducts));
         } else {
             int prevNumber = product.getOrderNumber() - 1;
             secondRow.add(new InlineKeyboardButton("\u25c0")
-                    .setCallbackData(CallbackType.CATEGORY + "="
+                    .setCallbackData(CATEGORY + "="
                             + product.getCategory().getName() + "=" + prevNumber));
         }
 
         secondRow.add(new InlineKeyboardButton((product.getOrderNumber()) + "/" + totalProducts)
-                .setCallbackData(CallbackType.IGNORE.name()));
+                .setCallbackData(IGNORE.name()));
 
         int nextNumber = product.getOrderNumber() + 1;
 
         if (nextNumber > totalProducts) {
             secondRow.add(new InlineKeyboardButton("\u25b6")
-                    .setCallbackData(CallbackType.CATEGORY + "="
+                    .setCallbackData(CATEGORY + "="
                             + product.getCategory().getName() + "=1"));
         } else {
             secondRow.add(new InlineKeyboardButton("\u25b6")
-                    .setCallbackData(CallbackType.CATEGORY + "="
+                    .setCallbackData(CATEGORY + "="
                             + product.getCategory().getName() + "=" + nextNumber));
         }
 
@@ -97,14 +102,14 @@ public class KeyboardService {
 
         List<InlineKeyboardButton> firstRow = new ArrayList<>();
         firstRow.add(new InlineKeyboardButton(messageService.getReplyText("button.editCart"))
-                .setCallbackData(CallbackType.EDIT_CART.name()));
+                .setCallbackData(EDIT_CART + "=" + EDIT_CART));
 
         firstRow.add(new InlineKeyboardButton(messageService.getReplyText("button.cleanCart"))
-                .setCallbackData(CallbackType.CLEAN_CART.name()));
+                .setCallbackData(CLEAN_CART.name()));
 
         List<InlineKeyboardButton> secondRow = new ArrayList<>();
         secondRow.add(new InlineKeyboardButton(messageService.getReplyText("button.processOrder"))
-                .setCallbackData(CallbackType.PROCESS_ORDER.name()));
+                .setCallbackData(PROCESS_ORDER.name()));
 
         keyboard.add(firstRow);
         keyboard.add(secondRow);
@@ -117,10 +122,10 @@ public class KeyboardService {
 
         List<InlineKeyboardButton> firstRow = new ArrayList<>();
         firstRow.add(new InlineKeyboardButton(messageService.getReplyText("button.novaPoshtaPayment"))
-                .setCallbackData(CallbackType.NP_PAYMENT.name()));
+                .setCallbackData(NP_PAYMENT.name()));
 
         firstRow.add(new InlineKeyboardButton(messageService.getReplyText("button.prepayment"))
-                .setCallbackData(CallbackType.PREPAYMENT.name()));
+                .setCallbackData(PREPAYMENT.name()));
 
         keyboard.add(firstRow);
 
@@ -155,10 +160,10 @@ public class KeyboardService {
 
         List<InlineKeyboardButton> firstRow = new ArrayList<>();
         firstRow.add(new InlineKeyboardButton(messageService.getReplyText("button.confirm"))
-                .setCallbackData(CallbackType.CONFIRM_ORDER.name()));
+                .setCallbackData(CONFIRM_ORDER.name()));
 
         firstRow.add(new InlineKeyboardButton(messageService.getReplyText("button.cancel"))
-                .setCallbackData(CallbackType.CANCEL_ORDER.name()));
+                .setCallbackData(CANCEL_ORDER.name()));
 
         keyboard.add(firstRow);
 
@@ -174,7 +179,7 @@ public class KeyboardService {
 
             keyboard.add(new ArrayList<>() {{
                 add(new InlineKeyboardButton(orderNumber)
-                        .setCallbackData(CallbackType.MY_ORDERS + "=" + orderId));
+                        .setCallbackData(MY_ORDERS + "=" + orderId));
             }});
         }
 
@@ -186,8 +191,43 @@ public class KeyboardService {
 
         keyboard.add(new ArrayList<>() {{
             add(new InlineKeyboardButton(messageService.getReplyText("button.repeatOrder"))
-                    .setCallbackData(CallbackType.REPEAT_ORDER + "=" + orderId));
+                    .setCallbackData(REPEAT_ORDER + "=" + orderId));
         }});
+
+        return new InlineKeyboardMarkup().setKeyboard(keyboard);
+    }
+
+    public InlineKeyboardMarkup getEditCartKeyboard(List<CartItem> cartItems, int currentPage) {
+        List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
+
+        List<InlineKeyboardButton> firstRow = new ArrayList<>();
+        firstRow.add(new InlineKeyboardButton("\u2716")
+                .setCallbackData(EDIT_CART + "=" + DELETE_PRODUCT));
+
+        firstRow.add(new InlineKeyboardButton("\u2796")
+                .setCallbackData(EDIT_CART + "=" + MINUS_PRODUCT));
+        firstRow.add(new InlineKeyboardButton(cartItems.get(currentPage).getQuantity() + " pcs.")
+                .setCallbackData(IGNORE.name()));
+        firstRow.add(new InlineKeyboardButton("\u2795")
+                .setCallbackData(EDIT_CART + "=" + PLUS_PRODUCT));
+
+        List<InlineKeyboardButton> secondRow = new ArrayList<>();
+        secondRow.add(new InlineKeyboardButton("\u25c0")
+                .setCallbackData(EDIT_CART + "=" + PREVIOUS_PRODUCT));
+        secondRow.add(new InlineKeyboardButton((currentPage + 1) + "/" + cartItems.size())
+                .setCallbackData(IGNORE.name()));
+        secondRow.add(new InlineKeyboardButton("\u25b6")
+                .setCallbackData(EDIT_CART + "=" + NEXT_PRODUCT));
+
+        List<InlineKeyboardButton> thirdRow = new ArrayList<>();
+        thirdRow.add(new InlineKeyboardButton()
+                .setText(String.format("\u2705 Order for %.2f $ Checkout?",
+                orderService.calculateTotalPrice(cartItems)))
+                .setCallbackData("cart=process-order"));
+
+        keyboard.add(firstRow);
+        keyboard.add(secondRow);
+        keyboard.add(thirdRow);
 
         return new InlineKeyboardMarkup().setKeyboard(keyboard);
     }

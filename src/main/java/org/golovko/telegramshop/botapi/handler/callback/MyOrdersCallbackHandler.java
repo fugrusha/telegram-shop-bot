@@ -47,7 +47,6 @@ public class MyOrdersCallbackHandler implements CallbackHandler {
 
         SendMessage replyToUser = messageService.getReplyMessage(chatId,
                 "reply.orderText", order.getOrderNumber(), createOrderText(order));
-        replyToUser.setParseMode("HTML");
         replyToUser.setReplyMarkup(keyboardService.getRepeatOrderKeybord(order.getId()));
 
         return replyToUser;

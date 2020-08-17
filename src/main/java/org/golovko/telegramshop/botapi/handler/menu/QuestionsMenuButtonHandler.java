@@ -31,11 +31,8 @@ public class QuestionsMenuButtonHandler implements InputMessageHandler {
     private SendMessage processUsersInput(Message inputMsg) {
         long chatId = inputMsg.getChatId();
 
-        SendMessage replyToUser = messageService.getReplyMessage(chatId, "reply.questionsMenuButton");
-        replyToUser.setParseMode("HTML");
-
         userDataCache.setNewBotState(chatId, BotState.SHOW_MAIN_MENU);
 
-        return replyToUser;
+        return messageService.getReplyMessage(chatId, "reply.questionsMenuButton");
     }
 }

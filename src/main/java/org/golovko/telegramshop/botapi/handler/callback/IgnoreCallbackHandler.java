@@ -5,21 +5,16 @@ import org.golovko.telegramshop.botapi.handler.CallbackHandler;
 import org.golovko.telegramshop.botapi.handler.CallbackType;
 import org.golovko.telegramshop.cache.UserDataCache;
 import org.golovko.telegramshop.service.ReplyMessageService;
-import org.golovko.telegramshop.service.ShoppingCartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
-import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 @Component
-public class CleanCartCallbackHandler implements CallbackHandler {
-
+public class IgnoreCallbackHandler implements CallbackHandler {
     @Autowired
     private UserDataCache userDataCache;
-
-    @Autowired
-    private ShoppingCartService cartService;
 
     @Autowired
     private ReplyMessageService messageService;
@@ -31,21 +26,22 @@ public class CleanCartCallbackHandler implements CallbackHandler {
 
     @Override
     public CallbackType getHandlerQueryType() {
-        return CallbackType.CLEAN_CART;
+        return CallbackType.IGNORE;
     }
 
-    private BotApiMethod<?> processUsersCallback(CallbackQuery buttonQuery) {
-        final long chatId = buttonQuery.getMessage().getChatId();
-
-        cartService.deleteAllCartItemsByChatId(chatId);
-
-        EditMessageText editMessageText = messageService.getEditMessageText(chatId,
-                buttonQuery.getMessage().getMessageId(),
-                messageService.getReplyText("reply.emptyShoppingCart"),
-                null);
-
+    private BotApiMethod<?> processUsersCallback(CallbackQuery callbackQuery) {
+        final long chatId = callbackQuery.getMessage().getChatId();
         userDataCache.setNewBotState(chatId, BotState.SHOW_MAIN_MENU);
 
-        return editMessageText;
+        return getAnswerCallbackQuery(
+                messageService.getReplyText("reply.buttonDoesNotWork"), callbackQuery);
+    }
+
+    private AnswerCallbackQuery getAnswerCallbackQuery(String text, CallbackQuery callbackquery) {
+        AnswerCallbackQuery answer = new AnswerCallbackQuery();
+        answer.setCallbackQueryId(callbackquery.getId());
+        answer.setShowAlert(false);
+        answer.setText(text);
+        return answer;
     }
 }

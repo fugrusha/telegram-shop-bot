@@ -54,7 +54,7 @@ public class OrderService {
         return now + "/" + fourChars;
     }
 
-    private double calculateTotalPrice(List<CartItem> cartItems) {
+    public double calculateTotalPrice(List<CartItem> cartItems) {
         double totalPrice = 0;
 
         for (CartItem cartItem : cartItems) {

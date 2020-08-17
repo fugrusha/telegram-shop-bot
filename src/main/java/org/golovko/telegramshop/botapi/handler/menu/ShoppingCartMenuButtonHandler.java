@@ -53,7 +53,6 @@ public class ShoppingCartMenuButtonHandler implements InputMessageHandler {
         SendMessage replyToUser = messageService.getReplyMessage(chatId,
                 "reply.shoppingCartText", cartText);
         replyToUser.setReplyMarkup(keyboardService.getShoppingCartKeyboard());
-        replyToUser.setParseMode("HTML");
 
         userDataCache.setNewBotState(chatId, BotState.SHOW_MAIN_MENU);
 

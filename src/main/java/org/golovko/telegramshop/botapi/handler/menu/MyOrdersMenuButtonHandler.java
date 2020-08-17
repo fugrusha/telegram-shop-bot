@@ -49,7 +49,6 @@ public class MyOrdersMenuButtonHandler implements InputMessageHandler {
         }
 
         SendMessage replyToUser = messageService.getReplyMessage(chatId, "reply.showMyOrders");
-        replyToUser.setParseMode("HTML");
         replyToUser.setReplyMarkup(keyboardService.getOrderListKeyboard(orders));
 
         userDataCache.setNewBotState(chatId, BotState.SHOW_MAIN_MENU);
